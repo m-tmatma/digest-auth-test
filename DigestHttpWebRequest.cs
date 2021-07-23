@@ -20,7 +20,6 @@ public class DigestHttpWebRequest
     private string _nonce;
     private string _qop;
     private string _cnonce;
-    private string _opaque;
     private DateTime _cnonceDate;
     private int _nc;
 
@@ -95,7 +94,6 @@ public class DigestHttpWebRequest
                         _realm = GetDigestHeaderAttribute("realm", wwwAuthenticateHeader);
                         _nonce = GetDigestHeaderAttribute("nonce", wwwAuthenticateHeader);
                         _qop = GetDigestHeaderAttribute("qop", wwwAuthenticateHeader);
-                        _opaque = GetDigestHeaderAttribute("opaque", wwwAuthenticateHeader);
 
                         _nc = 0;
                         _cnonce = new Random().Next(123400, 9999999).ToString();
@@ -190,8 +188,8 @@ public class DigestHttpWebRequest
             ComputeMd5Hash(string.Format("{0}:{1}:{2:00000000}:{3}:{4}:{5}", ha1, _nonce, _nc, _cnonce, _qop, ha2));
 
         return string.Format("Digest username=\"{0}\",realm=\"{1}\",nonce=\"{2}\",uri=\"{3}\"," +
-            "cnonce=\"{7}\",nc={6:00000000},qop={5},response=\"{4}\",opaque=\"{8}\"",
-            _user, _realm, _nonce, uri.PathAndQuery, digestResponse, _qop, _nc, _cnonce, _opaque);
+            "cnonce=\"{7}\",nc={6:00000000},qop={5},response=\"{4}\"",
+            _user, _realm, _nonce, uri.PathAndQuery, digestResponse, _qop, _nc, _cnonce);
 
         throw new Exception("The digest header could not be generated");
     }
