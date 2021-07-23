@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Security;
+using System.IO;
 
 namespace digest_auth_test
 {
@@ -20,6 +21,43 @@ namespace digest_auth_test
             request.Credentials = credentialCache;
 
             return request.GetResponse() as HttpWebResponse;
+        }
+
+        public static string WebServiceCall(string url, string user, string password)
+        {
+#if !DEBUG
+            try
+#endif
+            {
+                string response = string.Empty;
+
+                Uri uri = new Uri(url);
+
+                DigestHttpWebRequest req = new DigestHttpWebRequest(user, password);
+
+                using (HttpWebResponse webResponse = req.GetResponse(uri))
+                using (Stream responseStream = webResponse.GetResponseStream())
+                {
+                    if (responseStream != null)
+                    {
+                        using (StreamReader streamReader = new StreamReader(responseStream))
+                        {
+                            response = streamReader.ReadToEnd();
+                        }
+                    }
+                }
+                return response;
+            }
+#if !DEBUG
+            catch (WebException caught)
+            {
+                throw new WebException(string.Format("Exception in WebServiceCall: {0}", caught.Message));
+            }
+            catch (Exception caught)
+            {
+                throw new Exception(string.Format("Exception in WebServiceCall: {0}", caught.Message));
+            }
+#endif
         }
     }
 }
