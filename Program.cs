@@ -20,13 +20,24 @@ namespace digest_auth_test
             var user = args[1];
             var password = args[2];
 
-            var response = Http.CreateRequest(url, user, password);
-            var headers = response.Headers;
-            var statuscode = (int)response.StatusCode;
-            var statusdesc = response.StatusDescription;
-            Console.WriteLine(statuscode);
-            Console.WriteLine(statusdesc);
-            Console.WriteLine(headers.ToString());
+#if OLDCODE
+            if (false)
+            {
+                var response = Http.CreateRequest(url, user, password);
+                var headers = response.Headers;
+                var statuscode = (int)response.StatusCode;
+                var statusdesc = response.StatusDescription;
+                Console.WriteLine(statuscode);
+                Console.WriteLine(statusdesc);
+                Console.WriteLine(headers.ToString());
+            }
+            else
+#endif
+            {
+                var response = Http.WebServiceCall(url, user, password);
+
+
+            }
         }
     }
 }
