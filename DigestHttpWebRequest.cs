@@ -1,3 +1,10 @@
+using System;
+using System.IO;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+
 /// <summary>
 /// Modified class from:
 /// http://blogs.msdn.com/b/daniem/archive/2013/02/27/digest-authentication-in-system-net-classes-not-compliant-with-rfc2617.aspx
